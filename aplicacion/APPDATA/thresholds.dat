@@ -1,0 +1,19 @@
+# Classification thresholds obtained from validation results
+# Current threshold is '90'
+
+# The application will use the first uncommented threshold (with no '#')
+
+# 98 -- This threshold provided a 98.5% of sensitivity with a 21.4% of specificity in validation dataset
+# 0.060120
+
+# 95 -- This threshold provided a 95.72% of sensitivity with a 44.58% of specificity in validation dataset
+# 0.108216
+
+# 90 -- This threshold provided a 91.05% of sensitivity with a 66.81% of specificity in validation dataset
+0.190381
+
+# 85 -- This threshold provided a 85.44% of sensitivity with a 86.27% of specificity in validation dataset
+# 0.368737
+
+# This threshold provided a 84.16% of sensitivity with a 88.1% of specificity in validation dataset
+# 0.410822

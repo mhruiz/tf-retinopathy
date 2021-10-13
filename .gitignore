@@ -1,0 +1,10 @@
+logs/*
+saved_weights/*
+entrenamientos_pruebas/MNIST_dataset/*
+GeneraFOV_Diametro_Ajuste/*
+GitHub_Voets/*
+
+aplicacion/APPDATA/model_weights_0vs1234.h5
+
+.ipynb_checkpoints/*
+.vscode/*

@@ -1,0 +1,59 @@
+Generated small-ALL.csv file with all 6000 images
+-------------------
+ - Generated small-TRAIN-84.csv containing 5040 images belonging to these classes: 0, 1
+        Class 0 has 4118 -- 81.71% -- images distributed in these DR levels:
+                DR_lvl_0 with 3782 images -- 91.84%
+                DR_lvl_1 with 336 images -- 8.16%
+        Class 1 has 922 -- 18.29% -- images distributed in these DR levels:
+                DR_lvl_2 with 718 images -- 77.87%
+                DR_lvl_3 with 109 images -- 11.82%
+                DR_lvl_4 with 95 images -- 10.3%
+ - Generated small-VALIDATION-08.csv containing 480 images belonging to these classes: 0, 1
+        Class 0 has 397 -- 82.71% -- images distributed in these DR levels:
+                DR_lvl_0 with 354 images -- 89.17%
+                DR_lvl_1 with 43 images -- 10.83%
+        Class 1 has 83 -- 17.29% -- images distributed in these DR levels:
+                DR_lvl_2 with 61 images -- 73.49%
+                DR_lvl_3 with 14 images -- 16.87%
+                DR_lvl_4 with 8 images -- 9.64%
+ - Generated small-TEST-08.csv containing 480 images belonging to these classes: 0, 1
+        Class 0 has 380 -- 79.17% -- images distributed in these DR levels:
+                DR_lvl_0 with 340 images -- 89.47%
+                DR_lvl_1 with 40 images -- 10.53%
+        Class 1 has 100 -- 20.83% -- images distributed in these DR levels:
+                DR_lvl_2 with 81 images -- 81.0%
+                DR_lvl_3 with 9 images -- 9.0%
+                DR_lvl_4 with 10 images -- 10.0%
+                
+-------------------------
+Generated DATASET-ALL.csv file with all 71027 images
+-------------------
+ - Generated DATASET-TRAIN-80.csv containing 56822 images belonging to these classes: 0, 1, 2
+	Class 0 has 42149 -- 74.18% -- images distributed in these DR levels:
+		DR_lvl_0 with 42149 images -- 100.0%
+	Class 1 has 4049 -- 7.13% -- images distributed in these DR levels:
+		DR_lvl_1 with 4049 images -- 100.0%
+	Class 2 has 10624 -- 18.7% -- images distributed in these DR levels:
+		DR_lvl_2 with 8241 images -- 77.57%
+		DR_lvl_3 with 1283 images -- 12.08%
+		DR_lvl_4 with 1100 images -- 10.35%
+ - Generated DATASET-VALIDATION-10.csv containing 7103 images belonging to these classes: 0, 1, 2
+	Class 0 has 5304 -- 74.67% -- images distributed in these DR levels:
+		DR_lvl_0 with 5304 images -- 100.0%
+	Class 1 has 522 -- 7.35% -- images distributed in these DR levels:
+		DR_lvl_1 with 522 images -- 100.0%
+	Class 2 has 1277 -- 17.98% -- images distributed in these DR levels:
+		DR_lvl_2 with 997 images -- 78.07%
+		DR_lvl_3 with 138 images -- 10.81%
+		DR_lvl_4 with 142 images -- 11.12%
+ - Generated DATASET-TEST-10.csv containing 7102 images belonging to these classes: 0, 1, 2
+	Class 0 has 5223 -- 73.54% -- images distributed in these DR levels:
+		DR_lvl_0 with 5223 images -- 100.0%
+	Class 1 has 505 -- 7.11% -- images distributed in these DR levels:
+		DR_lvl_1 with 505 images -- 100.0%
+	Class 2 has 1374 -- 19.35% -- images distributed in these DR levels:
+		DR_lvl_2 with 1055 images -- 76.78%
+		DR_lvl_3 with 176 images -- 12.81%
+		DR_lvl_4 with 143 images -- 10.41%
+
+--------------------------

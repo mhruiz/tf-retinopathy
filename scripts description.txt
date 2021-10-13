@@ -1,0 +1,138 @@
+------------------------------------------------
+#### Main directory for Retinopathy project ####
+------------------------------------------------
+---------------------
+#### Directories ####
+
+- 'data' directory: store location for all datasets in every stage: downloaded and compressed datasets, decompressed datasets and processed datasets
+   More info about data distribution in readme file in data directory
+
+- 'GeneraFOV_Diametro_Ajuste' directory: store location for MATLAB functions and scrits for detecting the FOV in retina fundus images
+
+- 'GitHub_Voets' directory: clone of Voets et all. 2019 Replication GitHub project
+
+- 'lib' directory: store location for python functions
+
+-------------------
+##### Scripts #####
+
+Requeriments:
+- Python >= 3.7.9
+- OpenCV >= 4.4.0
+- Pillow (PIL) >= 8.0.1
+- xlrd >= 2.0.1 
+- Numpy >= 1.18.3
+- Pandas >= 1.1.4
+- Tensorflow >= 2.3.0
+- Imgaug >= 0.4.0
+
+Others requeriments (if eyepacs is not fixed):
+- zip
+- p7z
+
+_____________________________________________
+%%%% a00_fix_eyepacs_zip_files.sh Script %%%%
+    This scripts takes all eyepacs zip files downloaded from Kaggle and corrects them because they are wrongly partitioned.
+    It expects that those files are stored in 'data/downloaded_datasets/eyepacs/downloads/'.
+______________________________
+%%%% a01_ ... .py Scritps %%%%
+    These scripts (one per dataset) are in charge of creating all the general CSV files for every datasets. 
+    These scripts expect having all the dataset images saved in 'data/ "dataset" /images/' directory and all required files (labels for gradability, DR level, DME ...)
+    stored in 'data/ "dataset" /'.
+    Both images and dataset info files (labels and so more) have been decompressed and placed there MANUALLY.
+
+    Using the information given by these files, it will prepare a csv file which will contain all the info in a structured form. Moreover, it will analyze every 
+    image to detect its FOV, saving in the new CSV file the radius and center position of the FOV.
+
+    The generated CSV file will have the same structure for all datasets:
+        --------------------------------------------------------------------------------------------------------
+        image, path, DR_level, DME_level, gradability, size_x, size_y, cntr_radius, cntr_center_x, cntr_center_y
+        --------------------------------------------------------------------------------------------------------
+    And it will be stored in 'data/original_datasets/ "dataset" /'.
+    
+    The meaning for each columns is:
+    - image: it's the image's file name, without file extension
+    - path: it's the image's full path starting from 'data/' directory. Example: 'data/original_datasets/eyepacs/10_left.jpeg'
+    - DR_level: it's the diagnosed DR level or grade for current image, according to official grades, it can be from 0 (no DR) to 4 (Proliferative DR)
+    - DME_level: it indicates the presence or not of DME
+    - gradability: it indicates if the image has quality enough (0 - insufficient quality / ungradable, 1 - gradable)
+    - size_x: it's the width of the image, in pixels
+    - size_y: it's the height of the image, in pixels
+    - cntr_radius: it's the radius of the detected FOV in the image
+    - cntr_center_x: it's the x coordinate of the center of the FOV detected in the image
+    - cntr_center_y: it's the y coordinate of the center of the FOV detected in the image
+
+    It is important to note that if any image does not have any information about any of the above fields, those fields will be filled with -1. 
+    So, -1 will mean unknown value.
+_____________________________________________
+%%%% a02_redistribute_datasets.py Script %%%%
+    This script takes all datasets specified by arguments and creates for each of them a new directory inside 'data/processed_datasets'.
+    For each directory / dataset, it will create these directories:
+    - A new directory for all ungradable images: every ungradable image will be stored inside (although it has DR level assigned).
+    All images whose DR diagnosis is unknown (-1) MUST have as gradability label '0' (Ungradable)
+    - A new directory for each DR level present in this dataset. These directories will contain only grabable images.
+    - A new direcotry for all images whose FOV was not detected. These images will not be processed and they will be ignored.
+    There are some exceptions:
+    - If a dataset has no information about images gradability, 'ungradables' directory will not be created. Instead of that, an empty txt file 
+    named 'This dataset does not have gradability labels.txt' will be generated.
+    - If a dataset has all its images with their FOV detected, no directory for undetected FOV will be created.
+
+    All images that will be saved in those new directories after being processed by cropping the FOV, resizing the image to a better size (given by arguments)
+    (default size is 540) and padding it to form a squared shape image. The new image will have a .png file extension.
+
+    A new CSV file will be generated for each dataset, containing these columns:
+        ---------------------------------------------------------------------
+        image, path, DR_level, DME_level, gradability, old_size_x, old_size_y
+        ---------------------------------------------------------------------
+
+    The meaning for each columns is:
+    - image: it's the image's file name, without file extension
+    - path: it's the image's full path starting from 'data/' directory. Example: 'data/original_datasets/eyepacs/10_left.jpeg'
+    - DR_level: it's the diagnosed DR level or grade for current image, according to official grades, it can be from 0 (no DR) to 4 (Proliferative DR)
+    - DME_level: it indicates the presence or not of DME
+    - gradability: it indicates if the image has quality enough (0 - insufficient quality / ungradable, 1 - gradable)
+    - old_size_x: it's the width of the original image, in pixels, before cropping and resizing
+    - old_size_y: it's the height of the original image, in pixels, before cropping and resizing
+
+    'old_size_x' and 'old_size_y' will be used to discard images that may have been upscaled too much and perhaps they have lossed quality
+
+    No info about FOV is needed because all images have been processed (cropped, resized and padded)
+
+    As previous CSV file, it is important to note that if any image does not have any information about any of the above fields, those fields will be 
+    filled with -1. So, -1 will mean unknown value.
+
+    Use example: > python ./a02_redistribute_datasets.py -d eyepacs messidor_2 aptos_2019 --size 540
+_____________________________________________
+%%%% a03_define_custom_dataset.py Script %%%%
+    This script allows the user to create training, validation and test datasets by combining existing datasets
+    +---------------------------------------------------------------------------------------------------------------------+
+    | (all datasets must have been processed and stored in 'data/processed_datasets/' with a02_redistribute_datasets.py), |
+    +---------------------------------------------------------------------------------------------------------------------+
+    with the classes and the proportion established by the user. In addition, you can choose other features such as: 
+    using only scalable images, using images whose original size was larger than a threshold, or deciding if the 
+    user wants to know which images were discarded.
+
+    See a03_define_custom_dataset.py -h for more info about arguments.
+
+    For all datasets generated, it will show on screen some statistis of them, like number of images per class and DR level, and their csv files will 
+    be stored in root direcotry (Retinopathy/).
+
+    Use example: 
+    - (1) Create a dataset with 3 classes (class 0: dr levels 0 and 1, class 1: dr levels 2 and 3, class 2: dr level 4)
+    - (2) Using images from datasets eyepacs and aptos_2019
+    - (3) Divide it into train, validation and test in this way: 80 - 15 - 5
+    - (4) Ignore ungradable images
+    - (5) Ignore images whose original size was lower than 200 pixels
+    - (6) Save on a csv file all discarded images (perhaps for a future use)
+    
+    > python ./a03_define_custom_dataset.py -d eyepacs aptos_2019 -c 01 23 4 --train_val_test 80 15 5 --only_gradable -s 200 --save_discarded 
+                                            --------------------- ---------- ------------------------ --------------- ------ ----------------
+                                                       2               1                 3                   4           5           6
+
+_______________________________________________
+%%%% a04_create_copy_of_datasets.py Script %%%%
+    This script allows the user to create a copy of all images spcified in the given dataset and rewriting its csv files.
+    This can be useful when it is necessary to take some images and move them to another directory, without taking all
+    the 97.000 images.
+
+    The given dataset must have been obtenined by calling script 'a03_define_custom_datasets.py'.
